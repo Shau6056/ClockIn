@@ -2,4 +2,5 @@
     <string name="button_addTime">Clock In</string>
     <string name="app_name">ClockInSystem</string>
     <string name="description_oflate">If late state why here. Example: Traffic</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

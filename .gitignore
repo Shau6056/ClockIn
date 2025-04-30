@@ -7,3 +7,4 @@
 /captures
 .externalNativeBuild
 .cxx
+**/res/values/keys.xml

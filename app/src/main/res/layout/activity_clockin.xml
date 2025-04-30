@@ -60,8 +60,19 @@
                 android:padding="8dp"
                 android:stateListAnimator="@null"
                 android:text="@string/button_addTime"
-                android:textColor="@color/colorPrimary"
+                android:visibility="visible"
+                android:textColor="@android:color/white"
                 android:textSize="20sp" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@color/colorAccent"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"/>
 
                 <EditText
                     android:id="@+id/description"
