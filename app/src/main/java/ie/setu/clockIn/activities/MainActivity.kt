@@ -1,7 +1,6 @@
 package ie.setu.clockIn.activities
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Geocoder
 import android.location.Location
@@ -9,7 +8,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.github.ajalt.timberkt.Timber
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -17,8 +15,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.clockIn.models.ClockInModel
 import android.Manifest
-import ie.setu.clockinsystem.R
-import ie.setu.clockinsystem.databinding.ActivityClockinBinding
+import ie.setu.clockinsystem.databinding.ActivityMainBinding
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
@@ -27,12 +24,14 @@ import timber.log.Timber.i
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class ClockInActivity : AppCompatActivity() {
+class MainActivity : NavActivity() {
 
-    private lateinit var binding: ActivityClockinBinding
+    private lateinit var binding: ActivityMainBinding
+
     private val clockInList = mutableListOf<ClockInModel>()
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var location: FusedLocationProviderClient
+
 
     companion object {
         const val REQUESTCODE = 1001
@@ -41,9 +40,12 @@ class ClockInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         location = LocationServices.getFusedLocationProviderClient(this)
-        binding = ActivityClockinBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupBottomNavigation()
         displayCurrentTimeDate()
         registerMapCallback()
         checkPermissions()
@@ -53,13 +55,16 @@ class ClockInActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener()
         {
-            var capturedTime = displayCurrentTimeDate()
-            val intent = Intent(this, ClockOutActivity::class.java)
-            startActivity(intent)
 
             val descriptionInput = binding.description.text.toString().takeIf { it.isNotBlank() }
 
             getUserLocationReadable(this) { area ->
+
+                var capturedTime = displayCurrentTimeDate()
+                val intent = Intent(this, ClockOutActivity::class.java)
+                intent.putExtra("clockIndate", capturedTime)
+                intent.putExtra("location", area)
+                startActivity(intent)
 
                 if (capturedTime.isNotEmpty()) {
                     val clockInInfo =

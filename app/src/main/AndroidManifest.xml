@@ -26,7 +26,7 @@
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name="ie.setu.clockIn.activities.ClockInActivity"
+            android:name="ie.setu.clockIn.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +35,12 @@
         </activity>
 
         <activity android:name="ie.setu.clockIn.activities.ClockOutActivity" />
+
+        <activity android:name="ie.setu.clockIn.activities.AddClockOutImageActivity"/>
+
+        <activity android:name="ie.setu.clockIn.activities.ClockLogHistoryActivity"/>
+
+
     </application>
 
 </manifest>

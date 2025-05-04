@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: 01/05/2025"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/imageClock"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/textClockTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date"
+            android:layout_marginTop="4dp"
+            android:text="Start - End 09:00 - 17::00"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/imageClock"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/textDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textClockTime"
+            android:layout_marginTop="4dp"
+            android:text="Duration: Location: "
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/imageClock"
+            android:layout_marginEnd="16dp"/>
+
+
+
+        <ImageView
+            android:id="@+id/imageClock"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

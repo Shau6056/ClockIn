@@ -12,7 +12,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import ie.setu.clockinsystem.R
 import ie.setu.clockinsystem.databinding.ActivityMapBinding
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : NavActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapBinding

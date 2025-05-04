@@ -6,9 +6,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.github.ajalt.timberkt.Timber
 import ie.setu.clockIn.models.ClockLogModel
 import ie.setu.clockinsystem.R
+import ie.setu.clockinsystem.databinding.ActivityClockoutBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -16,15 +18,21 @@ import java.util.Locale
 
 //We have our class called ClockOutActivity which inherits from the AppCompatActivity our parent class in this instance
 //AppCompatActivity settings up the screen, manages layout and handles the activity
-class ClockOutActivity: AppCompatActivity() {
+class ClockOutActivity: NavActivity() {
+
+    private lateinit var clockOutBind: ActivityClockoutBinding
 
     val clockLog = mutableListOf<ClockLogModel>()
-
     //The onCreate is the first thing that Android will run when the screen opens
     override fun onCreate(savedInstanceState: Bundle?) {
         //Calling the super.onCreate prevent crashing and proper set up //so we are running the android built in setup before I apply the
         //below logic
         super.onCreate(savedInstanceState)
+
+        clockOutBind = ActivityClockoutBinding.inflate(layoutInflater)
+        setContentView(clockOutBind.root)
+        setupBottomNavigation()
+
         //Connecting activity to the activity_clock_out.xml file
         //The setContentView is from the Activity class which the AppCompatActivity inherits from
         //R -> Res -> Resource file.layout(folder) get the activity_clockout this is what we are accessing
@@ -61,7 +69,7 @@ class ClockOutActivity: AppCompatActivity() {
 
                 val loggedTimes = ClockLogModel(
                     type = currentClockType,
-                    startime = clockStartTime!!,
+                    startTime = clockStartTime!!,
                     endTime = breakEnd,
                     durationMin = workedMin
                 )
@@ -99,8 +107,20 @@ class ClockOutActivity: AppCompatActivity() {
             btnReturn.visibility = View.VISIBLE
         }
         btnFinish.setOnClickListener{
-            Toast.makeText(this, "You are now on Finished! Yay!", Toast.LENGTH_SHORT).show()
+
+            Timber.i { "Finish button clicked – attempting to launch AddClockOutImageActivity" }
+            //I have to pass the data collected into the clockOutImageActivity
+            val intent = Intent(this, AddClockOutImageActivity::class.java)
+            //We are sending in the clocktype as Finish
+            intent.putExtra("clockType", "Finish")
+            //And sending the start time the ?: 0L is this is just saying if the clockStartTime is not null then use this but if it is use 0L zero
+            intent.putExtra("startTime",clockStartTime ?: 0L)
+            //And we are sending in the intent to the next activity which is our AddClockOutImageActivity
+            startActivity(intent)
+
         }
+
+
 
 
     }
