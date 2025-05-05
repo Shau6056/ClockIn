@@ -12,10 +12,12 @@ import java.util.Locale
 
 //creating a adapter class to connect the list of clock models to the recyclerview
 
-class ClockLogAdapter(private val logs: List<ClockLogModel>):
-
+class ClockLogAdapter(
+    private val logs: List<ClockLogModel>,
+    private val edit: (ClockLogModel) -> Unit,
+    private val delete: (ClockLogModel)-> Unit):
 //Adapter expects view of type Mainholder
-        RecyclerView.Adapter<ClockLogAdapter.MainHolder>()
+    RecyclerView.Adapter<ClockLogAdapter.MainHolder>()
 {
             //creating to say a new viewholder need to be created
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -29,7 +31,8 @@ class ClockLogAdapter(private val logs: List<ClockLogModel>):
     //needed this to bind the data from the model to the viewholder views
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
        val log = logs[holder.adapterPosition]
-        holder.bind(log)
+        holder.bind(log, edit, delete)
+
     }
     //returns the num of items
     override fun getItemCount(): Int = logs.size
@@ -38,14 +41,20 @@ class ClockLogAdapter(private val logs: List<ClockLogModel>):
             RecyclerView.ViewHolder(binding.root){
 
                 //Binds the data from the clockmodel objects to the interface
-                fun bind(log: ClockLogModel) {
+                fun bind(
+                    log: ClockLogModel,
+                    edit: (ClockLogModel) -> Unit,
+                    delete: (ClockLogModel) -> Unit
+                ) {
                     binding.date.text = "Date: ${log.clockInDate}"
 
                     val start = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(log.startTime))
                     val end = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(log.endTime))
 
                     binding.textClockTime.text = "Start: $start | End: $end"
-                    binding.textDuration.text = "Duration: ${log.durationMin} min\nLocation: ${log.location ?: "N/A"}"
+                    binding.textLocation.text = "Location: ${log.location}"
+                    binding.btnEdit.setOnClickListener{edit(log)}
+                    binding.btnDelete.setOnClickListener{delete(log)}
 
                     if (!log.image.toString().isNullOrEmpty()) {
                         Picasso.get().load(log.image).into(binding.imageClock)

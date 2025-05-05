@@ -16,6 +16,7 @@ import java.util.Date
 import java.util.Locale
 
 
+
 //We have our class called ClockOutActivity which inherits from the AppCompatActivity our parent class in this instance
 //AppCompatActivity settings up the screen, manages layout and handles the activity
 class ClockOutActivity: NavActivity() {
@@ -71,7 +72,8 @@ class ClockOutActivity: NavActivity() {
                     type = currentClockType,
                     startTime = clockStartTime!!,
                     endTime = breakEnd,
-                    durationMin = workedMin
+                    durationMin = workedMin,
+
                 )
 
                 clockLog.add(loggedTimes)

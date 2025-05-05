@@ -1,4 +1,4 @@
-package ie.setu.clockIn
+package ie.setu.clockIn.main
 
 import android.app.Application
 import com.github.ajalt.timberkt.Timber

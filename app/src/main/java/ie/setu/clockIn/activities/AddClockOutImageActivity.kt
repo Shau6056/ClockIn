@@ -4,15 +4,12 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import com.github.ajalt.timberkt.Timber
 import com.github.ajalt.timberkt.i
 import com.squareup.picasso.Picasso
-import ie.setu.clockIn.MainApp
+import ie.setu.clockIn.main.MainApp
 import ie.setu.clockIn.models.ClockLogModel
-import ie.setu.clockinsystem.R
 import ie.setu.clockinsystem.databinding.ActivityClockoutimageBinding
-import ie.setu.clockinsystem.databinding.ActivityMainBinding
 import timber.log.Timber.i
 
 
@@ -41,14 +38,19 @@ class AddClockOutImageActivity : NavActivity() {
         //now we are getting the clocktype from ClockOut activity
         val clockType = intent.getStringExtra("clockType") ?: "Unknown"
         val startTime = intent.getLongExtra("startTime", 0L)
-        val clockIndate = intent.getStringExtra("clockIndate") ?: "N/A"
-        val location = intent.getStringExtra("location") ?: "N/A"
+        val clockIndate = intent.getStringExtra("clockIndate")
+        val location = intent.getStringExtra("location")
+        val latitude = intent.getDoubleExtra("latitude", 0.0)
+        val longitude = intent.getDoubleExtra("longitude", 0.0)
+
 
         clockLog = ClockLogModel(
             type = clockType,
             startTime = startTime,
             clockInDate = clockIndate,
-            location = location
+            location = location,
+            longitude = longitude,
+            latitude = latitude
         )
 
         registerImagePickerCallback()

@@ -13,8 +13,10 @@ data class ClockLogModel (
     var endTime: Long = 0L,
     var durationMin: Long = 0L,
     var image: Uri = Uri.EMPTY,
-    var clockInDate: String?= "Not Working",
-    var location: String? = "Not Working"
+    var clockInDate: String?= null,
+    var location: String? = null,
+    var latitude: Double? = null,
+    var longitude: Double? = null
 )
 
 //Long data type stores whole numbers like intergers but it can store bigger numbers because I am are using the currentTimeMillis

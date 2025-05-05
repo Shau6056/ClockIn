@@ -15,36 +15,57 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date: 01/05/2025"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="16dp"
             android:layout_toStartOf="@id/imageClock"
-            android:layout_marginEnd="16dp"/>
+            android:text="Date: 01/05/2025"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textClockTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/date"
-            android:layout_marginTop="4dp"
-            android:text="Start - End 09:00 - 17::00"
             android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
             android:layout_toStartOf="@id/imageClock"
-            android:layout_marginEnd="16dp"/>
+            android:text="Start - End: 09:00 - 17:00" />
 
         <TextView
-            android:id="@+id/textDuration"
+            android:id="@+id/textLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textClockTime"
-            android:layout_marginTop="4dp"
-            android:text="Duration: Location: "
             android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp"
             android:layout_toStartOf="@id/imageClock"
-            android:layout_marginEnd="16dp"/>
+            android:text="Location: New Ross, Wexford" />
 
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textLocation"
+            android:layout_marginTop="8dp"
+            android:text="Edit"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:background="@android:color/holo_blue_dark" />
 
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textLocation"
+            android:layout_toEndOf="@id/btnEdit"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Delete"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:background="@android:color/holo_red_dark" />
 
         <ImageView
             android:id="@+id/imageClock"

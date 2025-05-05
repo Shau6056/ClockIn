@@ -57,4 +57,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.picasso)
     implementation(libs.material)
+    implementation(libs.androidx.core.splashscreen)
 }

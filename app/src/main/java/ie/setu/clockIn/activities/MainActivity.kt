@@ -13,8 +13,10 @@ import com.github.ajalt.timberkt.Timber
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import ie.setu.clockIn.models.ClockInModel
 import android.Manifest
+import android.net.Uri
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import ie.setu.clockIn.models.ClockLogModel
 import ie.setu.clockinsystem.databinding.ActivityMainBinding
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -24,11 +26,12 @@ import timber.log.Timber.i
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+
 class MainActivity : NavActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val clockInList = mutableListOf<ClockInModel>()
+    private val clockInList = mutableListOf<ClockLogModel>()
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var location: FusedLocationProviderClient
 
@@ -38,13 +41,18 @@ class MainActivity : NavActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Thread.sleep(2500)
+        installSplashScreen()
+
+
         super.onCreate(savedInstanceState)
-
-
 
         location = LocationServices.getFusedLocationProviderClient(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
         setupBottomNavigation()
         displayCurrentTimeDate()
         registerMapCallback()
@@ -58,20 +66,27 @@ class MainActivity : NavActivity() {
 
             val descriptionInput = binding.description.text.toString().takeIf { it.isNotBlank() }
 
-            getUserLocationReadable(this) { area ->
+            getUserLocationReadable(this) { area, latitude, longitude ->
 
                 var capturedTime = displayCurrentTimeDate()
                 val intent = Intent(this, ClockOutActivity::class.java)
                 intent.putExtra("clockIndate", capturedTime)
                 intent.putExtra("location", area)
+                intent.putExtra("latitude", latitude)
+                intent.putExtra("longitude", longitude)
                 startActivity(intent)
 
                 if (capturedTime.isNotEmpty()) {
-                    val clockInInfo =
-                        ClockInModel(
-                            clockInTime = capturedTime,
-                            lateDescription = descriptionInput,
-                            location = area
+                    val clockInInfo = ClockLogModel(
+                        type = "Clock In",
+                        startTime = System.currentTimeMillis(),
+                        endTime = 0L,
+                        durationMin = 0L,
+                        image = Uri.EMPTY,
+                         clockInDate = capturedTime,
+                         location = area,
+                         latitude = latitude,
+                         longitude = longitude
 
                         )
                     clockInList.add(clockInInfo)
@@ -130,7 +145,7 @@ class MainActivity : NavActivity() {
     // The onLocationReady parameter is a Kotlin lambda callback - when the location is ready
     //We fetch the data for the current location and then return it as string
     // And the string is then passed into the variable called area.
-    private fun getUserLocationReadable(context: Context, onLocationReady: (String) -> Unit) {
+    private fun getUserLocationReadable(context: Context, onLocationReady: (String, Double, Double) -> Unit) {
 
         val fusedLocationClient: FusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(context)
@@ -146,7 +161,7 @@ class MainActivity : NavActivity() {
             ) != PERMISSION_GRANTED
         ) {
 
-            onLocationReady("Permission not granted")
+            onLocationReady("Permission not granted", 0.0, 0.0)
             return
         }
 
@@ -159,14 +174,14 @@ class MainActivity : NavActivity() {
                     if (!addressStored.isNullOrEmpty()) {
                         val address = addressStored[0].getAddressLine(0)
                         Timber.i { "Address found: $address" }
-                        onLocationReady(address)
+                        onLocationReady(address, location.latitude, location.longitude)
                     } else {
-                        onLocationReady("Location is unavailable at this moment")
+                        onLocationReady("Location is unavailable at this moment", 0.0,0.0)
 
                     }
                 } catch (e: Exception) {
                     Timber.e { "It failed" }
-                    onLocationReady("Failed :${e.message}")
+                    onLocationReady("Failed :${e.message}", 0.0, 0.0)
                 }
             }
         }
@@ -182,7 +197,7 @@ class MainActivity : NavActivity() {
             if (grantResults.isNotEmpty() && grantResults.all { it == PERMISSION_GRANTED }) {
                 Timber.i { "Location granted" }
 
-                getUserLocationReadable(this) { area ->
+                getUserLocationReadable(this) { area,longitude, latitude->
                     Timber.i { " Location is: $area" }
                 }
             } else {
@@ -203,7 +218,7 @@ class MainActivity : NavActivity() {
                 ), REQUESTCODE
             )
         } else {
-            getUserLocationReadable(this) { area ->
+            getUserLocationReadable(this) { area, longitude, latitude ->
                 Timber.i { "Location at launch: $area" }
             }
         }

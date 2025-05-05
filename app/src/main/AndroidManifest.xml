@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name="ie.setu.clockIn.MainApp"
+        android:name="ie.setu.clockIn.main.MainApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,9 +25,11 @@
             android:name="ie.setu.clockIn.activities.MapActivity"
             android:exported="false"
             android:label="@string/title_activity_map" />
+
         <activity
             android:name="ie.setu.clockIn.activities.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
