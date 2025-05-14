@@ -3,11 +3,13 @@ package ie.setu.clockIn.models
 import android.location.Location
 import android.net.Uri
 import java.util.Date
+import java.util.UUID
 import kotlin.time.Duration
 
 //Had to set the below to have values as the and then when data is added it will change
 
 data class ClockLogModel (
+    var id: String = UUID.randomUUID().toString(),
     val type: String = "",
     val startTime: Long = 0L,
     var endTime: Long = 0L,

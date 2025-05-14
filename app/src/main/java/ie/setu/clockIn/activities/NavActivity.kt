@@ -3,11 +3,12 @@ package ie.setu.clockIn.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import ie.setu.clockinsystem.R
 
 open class NavActivity: AppCompatActivity() {
 
-   fun setupBottomNavigation() {
+    fun setupBottomNavigation() {
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
@@ -16,7 +17,8 @@ open class NavActivity: AppCompatActivity() {
                 R.id.bottom_home -> {
                     if (this !is MainActivity) {
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                         finish()
                     }
@@ -44,8 +46,20 @@ open class NavActivity: AppCompatActivity() {
                     }
                     true
                 }
+
+                R.id.bottom_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, login_activity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+
                 else -> false
             }
         }
     }
 }
+
+

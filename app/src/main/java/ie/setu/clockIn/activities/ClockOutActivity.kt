@@ -22,14 +22,22 @@ import java.util.Locale
 class ClockOutActivity: NavActivity() {
 
     private lateinit var clockOutBind: ActivityClockoutBinding
-
+    private var clockIndate: String? =null
+    private var location: String? =null
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    private var clockStartTime: Long = 0L
     val clockLog = mutableListOf<ClockLogModel>()
     //The onCreate is the first thing that Android will run when the screen opens
     override fun onCreate(savedInstanceState: Bundle?) {
         //Calling the super.onCreate prevent crashing and proper set up //so we are running the android built in setup before I apply the
         //below logic
         super.onCreate(savedInstanceState)
-
+        clockIndate = intent.getStringExtra("clockIndate")
+        location = intent.getStringExtra("location")
+        latitude = intent.getDoubleExtra("latitude", 0.0)
+        longitude = intent.getDoubleExtra("longitude", 0.0)
+        clockStartTime = intent.getLongExtra("startTime", 0L)
         clockOutBind = ActivityClockoutBinding.inflate(layoutInflater)
         setContentView(clockOutBind.root)
         setupBottomNavigation()
@@ -45,7 +53,6 @@ class ClockOutActivity: NavActivity() {
         val btnReturn = findViewById<Button>(R.id.btnReturn)
         val message = findViewById<TextView>(R.id.statusText)
         var currentClockType: String = ""
-        var clockStartTime: Long? = null
 
         //Now we are giving the user the click listener for the buttons
         btnBreak.setOnClickListener {
@@ -117,6 +124,10 @@ class ClockOutActivity: NavActivity() {
             intent.putExtra("clockType", "Finish")
             //And sending the start time the ?: 0L is this is just saying if the clockStartTime is not null then use this but if it is use 0L zero
             intent.putExtra("startTime",clockStartTime ?: 0L)
+            intent.putExtra("clockIndate", clockIndate)
+            intent.putExtra("location", location)
+            intent.putExtra("latitude", latitude ?:0.0)
+            intent.putExtra("longitude", longitude ?: 0.0)
             //And we are sending in the intent to the next activity which is our AddClockOutImageActivity
             startActivity(intent)
 

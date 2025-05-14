@@ -22,10 +22,17 @@ class ClockLogHistoryActivity : NavActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private var logEdit: ClockLogModel? = null
     lateinit var app: MainApp
+    lateinit var logs: MutableList<ClockLogModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        app = application as MainApp
+
+        logs = app.clockLogStore.findAll().toMutableList()
+
         registerImagePicker()
+
         clockLogHisBinding = ActivityClocklogHistoryBinding.inflate(layoutInflater)
         setContentView(clockLogHisBinding.root)
         setupBottomNavigation()
@@ -34,35 +41,41 @@ class ClockLogHistoryActivity : NavActivity() {
         clockLogHisBinding.toolbar.title = "Clock In History"
         setSupportActionBar(clockLogHisBinding.toolbar)
 
-        app = application as MainApp
 
-        val layoutManager = LinearLayoutManager(this)
-        clockLogHisBinding.recyclerView.layoutManager = layoutManager
+        clockLogHisBinding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        clockLogHisBinding.recyclerView.adapter = ClockLogAdapter(app.clockLogs,
+        recyclerView()
+
+    }
+
+    private fun recyclerView() {
+        val updatedLogs = app.clockLogStore.findAll()
+        clockLogHisBinding.recyclerView.adapter = ClockLogAdapter(updatedLogs,
             edit = { log ->
                 logEdit = log
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply { type = "image/*" }
                 imageIntentLauncher.launch(intent)
             },
             delete = { log ->
-                Log.d("DEBUG", "Delete clicked for: ${log.clockInDate}")
-                log.image = Uri.EMPTY
-                clockLogHisBinding.recyclerView.adapter?.notifyDataSetChanged()
+                //  Log.d("DEBUG", "Delete clicked for: ${log.clockInDate}")
+                app.clockLogStore.delete(log)
+                recyclerView()
             })
-        }
+    }
 
     private fun registerImagePicker() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK && result.data != null) {
                     val uri = result.data!!.data!!
-                    logEdit?.image = uri
-                    clockLogHisBinding.recyclerView.adapter?.notifyDataSetChanged()
+                    logEdit?.let {
+                        it.image = uri
+                        app.clockLogStore.update(it)
+                    }
+                    recyclerView()
                 }
             }
     }
-
-    }
+}
 
 

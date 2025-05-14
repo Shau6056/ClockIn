@@ -16,5 +16,10 @@
         android:title="Map"
         android:icon="@drawable/map"/>
 
+    <item
+        android:id="@+id/bottom_logout"
+        android:title="Log Out"
+        android:icon="@drawable/logout"/>
+
 
 </menu>

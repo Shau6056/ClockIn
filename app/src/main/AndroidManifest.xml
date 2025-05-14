@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="ie.setu.clockIn.main.MainApp"
@@ -17,15 +20,6 @@
         android:theme="@style/Base.Theme.ClockInSystem"
         tools:targetApi="31">
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <activity
-            android:name="ie.setu.clockIn.activities.MapActivity"
-            android:exported="false"
-            android:label="@string/title_activity_map" />
-
         <activity
             android:name="ie.setu.clockIn.activities.MainActivity"
             android:exported="true"
@@ -36,13 +30,28 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="ie.setu.clockIn.activities.login_activity"
+            android:exported="true" />
+
+        <activity
+            android:name="ie.setu.clockIn.activities.Registration_activity"
+            android:exported="false" />
+
+        <activity
+            android:name="ie.setu.clockIn.activities.MapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_map" />
+
         <activity android:name="ie.setu.clockIn.activities.ClockOutActivity" />
+        <activity android:name="ie.setu.clockIn.activities.AddClockOutImageActivity" />
+        <activity android:name="ie.setu.clockIn.activities.ClockLogHistoryActivity" />
 
-        <activity android:name="ie.setu.clockIn.activities.AddClockOutImageActivity"/>
-
-        <activity android:name="ie.setu.clockIn.activities.ClockLogHistoryActivity"/>
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
     </application>
+
 
 </manifest>

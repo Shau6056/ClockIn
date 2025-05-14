@@ -1,5 +1,6 @@
 package ie.setu.clockIn.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +37,7 @@ class ClockLogAdapter(
     }
     //returns the num of items
     override fun getItemCount(): Int = logs.size
-//holds and binds the data to the compentents of the card
+//holds and binds the data to the compontents of the card
     class MainHolder(private val binding: CardClockLogBinding):
             RecyclerView.ViewHolder(binding.root){
 
@@ -56,9 +57,12 @@ class ClockLogAdapter(
                     binding.btnEdit.setOnClickListener{edit(log)}
                     binding.btnDelete.setOnClickListener{delete(log)}
 
-                    if (!log.image.toString().isNullOrEmpty()) {
+                    if (log.image != Uri.EMPTY) {
                         Picasso.get().load(log.image).into(binding.imageClock)
+                    } else {
+                        binding.imageClock.setImageDrawable(null)
                     }
+
                 }
 
 }

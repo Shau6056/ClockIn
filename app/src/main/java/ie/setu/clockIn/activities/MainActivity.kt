@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import android.Manifest
 import android.net.Uri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.firebase.auth.FirebaseAuth
 import ie.setu.clockIn.models.ClockLogModel
 import ie.setu.clockinsystem.databinding.ActivityMainBinding
 import kotlinx.datetime.Clock
@@ -51,7 +52,14 @@ class MainActivity : NavActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
 
+        if (currentUser == null) {
+            val intent = Intent(this, login_activity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         setupBottomNavigation()
         displayCurrentTimeDate()
@@ -68,13 +76,8 @@ class MainActivity : NavActivity() {
 
             getUserLocationReadable(this) { area, latitude, longitude ->
 
+
                 var capturedTime = displayCurrentTimeDate()
-                val intent = Intent(this, ClockOutActivity::class.java)
-                intent.putExtra("clockIndate", capturedTime)
-                intent.putExtra("location", area)
-                intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude", longitude)
-                startActivity(intent)
 
                 if (capturedTime.isNotEmpty()) {
                     val clockInInfo = ClockLogModel(
@@ -89,6 +92,14 @@ class MainActivity : NavActivity() {
                          longitude = longitude
 
                         )
+
+                    val intent = Intent(this, ClockOutActivity::class.java)
+                    intent.putExtra("clockIndate", capturedTime)
+                    intent.putExtra("startTime", clockInInfo.startTime)
+                    intent.putExtra("location", area)
+                    intent.putExtra("latitude", latitude)
+                    intent.putExtra("longitude", longitude)
+                    startActivity(intent)
                     clockInList.add(clockInInfo)
 
 
